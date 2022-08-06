@@ -69,7 +69,7 @@ late final QwixxServiceClient stub;
       yield room;
     }
   }
-  void updateDices(User user){
+  void updateDices(User user)async{
     stub.updateDice(user);
   }
   Stream<User> receiveDice(Room room,User user)async*{

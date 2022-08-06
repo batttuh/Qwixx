@@ -33,10 +33,8 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
 
     @Override
     public void updateDice(User request, StreamObserver<Empty> responseObserver) {
-        user.get(request.getRoom())
-        .stream()
-                .filter((user1)->user1.getId().equals(request.getId()))
-                .forEach(user1 -> user1=request);
+        user.get(request.getRoom()).set(queue.get(request.getRoom()), request);
+        System.out.println(user);
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
     }

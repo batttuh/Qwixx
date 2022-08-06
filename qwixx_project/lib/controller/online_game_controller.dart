@@ -1,7 +1,5 @@
 import "dart:math";
 
-import 'package:flutter/cupertino.dart';
-
 import '../src/generated/proto/src/main/proto/schema.pb.dart';
 import '../src/generated/proto/src/main/proto/schema.pbgrpc.dart';
 import 'client_server_controller.dart';
@@ -47,15 +45,20 @@ class OnlineGameController extends ClientController {
     user.dices.addAll(dices);
     updateDices(user);
   }
-  void rollDice(bool isTimeFinished,isRolled,timeSetted,AnimationController animationController,bool sixSide,User user) {
+  void rollDice(
+    //bool isTimeFinished,
+    //isRolled,timeSetted,
+    //AnimationController animationController,
+    bool sixSide,
+    User user) {
 
-      isRolled=true;
-      if (isRolled&&timeSetted) {
-      animationController.reverse(
-          from: animationController.value == 0
-              ? 1
-              : animationController.value);
-    }
+    //   isRolled=true;
+    //   if (isRolled&&timeSetted) {
+    //   animationController.reverse(
+    //       from: animationController.value == 0
+    //           ? 1
+    //           : animationController.value);
+    // }
     if(sixSide){
 
     for (var element in dices) {

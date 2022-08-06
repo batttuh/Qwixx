@@ -37,18 +37,18 @@ class _GameChooseState extends State<GameChoose> {
                 if(widget.online){
                   var newUUID=uuid.v1().substring(0,7);
                  User user=await controller.create(
-                      DefaultUserModel().userModel(newUUID,false)
+                      DefaultUserModel().userModel(newUUID,true)
                   );
                   Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) =>  WaitingUser(side: false,user: user)),
+                  MaterialPageRoute(builder: (context) =>  WaitingUser(side: true,user: user)),
                   );
                 
 
                 }else{
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) =>  const GameView(side:false)),
+                    MaterialPageRoute(builder: (context) =>  const GameView(side:true)),
                   );
                 }
               },
