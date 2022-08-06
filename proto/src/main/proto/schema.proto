@@ -1,0 +1,67 @@
+syntax="proto3";
+
+package com.grpc;
+
+option java_multiple_files=true;
+
+
+message Dice{
+  int32 number=1;
+  enum Type {
+    white = 0;
+    secondWhite = 1;
+    blue = 2;
+    green = 3;
+    red = 4;
+    yellow = 5;
+  }
+  Type diceColor=2;
+  string path=3;
+  bool enable=4;
+
+}
+message Room{
+  string roomId=1;
+  bool sixSide=2;
+}
+
+message User{
+  string id=1;
+  Room room=2;
+  repeated Dice dices=3;
+  int32 queue=4;
+
+}
+
+message IsStarted{
+  bool isStarted=1;
+  Room room=2;
+}
+message Empty{}
+
+message UserList{
+  repeated User users=1;
+}
+
+message Response{
+  int32 error=1;
+  string msg=2;
+}
+message Time{
+  int32 Time=1;
+  Room room=2;
+}
+
+service QwixxService {
+  rpc join(User) returns (User) {}
+  rpc create(User) returns(User){}
+  rpc getAllUsers(Room) returns (stream UserList) {}
+  rpc nextUser(Room) returns (User){}
+  rpc currentUser(Room) returns (stream User){}
+  rpc receiveDice (Room) returns (stream User) {}
+  rpc setTime(Time) returns (Empty){}
+  rpc startTimer(Room) returns (stream Time){}
+  rpc startGame(Room) returns (Empty){}
+  rpc getStartedGame(Room) returns(stream Response){}
+  rpc updateDice(User) returns(Empty){}
+}
