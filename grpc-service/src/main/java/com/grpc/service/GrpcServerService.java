@@ -18,6 +18,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @GrpcService
@@ -42,9 +43,10 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     @Override
     public void getStartedGame(Room request, StreamObserver<Response> responseObserver) {
         startGameObserver.add(responseObserver);
-        System.out.println("Here");
+
         for(StreamObserver<Response> observer:startGameObserver){
             if(games.get(request)){
+                System.out.println("Here");
                 observer.onNext(Response.newBuilder().setMsg("started").setError(0).build());
             }else{
                 observer.onNext(Response.newBuilder().setMsg("not Started").setError(1).build());
@@ -69,6 +71,7 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     public void getAllUsers(Room request, StreamObserver<UserList> responseObserver) {
 
         observers.add(responseObserver);
+        System.out.println(request);
         UserList list=UserList.newBuilder().addAllUsers(user.get(request)).build();
 
         for(StreamObserver<UserList> observer:observers){
@@ -106,7 +109,12 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
 
 
 
+    }
 
+    @Override
+    public void removeRoom(Room request, StreamObserver<Empty> responseObserver) {
+        user.remove(request);
+        responseObserver.onCompleted();
     }
 
     @Override
@@ -121,9 +129,14 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     @Override
     public void join(User request, StreamObserver<User> responseObserver) {
         Room room=Room.newBuilder().setRoomId(request.getRoom().getRoomId()).build();
+        List<Room> findRoom=user.keySet().stream().filter(room1 -> room1.getRoomId().equals(room.getRoomId())).collect(Collectors.toList());
         if(user.keySet().stream().anyMatch(room1 -> request.getRoom().getRoomId().equals(room1.getRoomId()))){
-            user.get(room).add(request.toBuilder().setQueue(user.get(room).size()).setId(UUID.randomUUID().toString()).build());
-            responseObserver.onNext(user.get(request.getRoom()).get(user.get(room).size()-1));
+            user.get(findRoom.get(0))
+                    .add(request.toBuilder()
+                            .setRoom(findRoom.get(0))
+                            .setQueue(user.get(findRoom.get(0)).size())
+                            .setId(UUID.randomUUID().toString()).build());
+            responseObserver.onNext(user.get(findRoom.get(0)).get(user.get(findRoom.get(0)).size()-1));
         }else{
 
             responseObserver.onError(new Throwable());
@@ -133,7 +146,12 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
 
     @Override
     public void setTime(Time request, StreamObserver<Empty> responseObserver) {
-        timer.put(request.getRoom(),request);
+        if(timer.containsKey(request.getRoom())){
+            timer.replace(request.getRoom(),request);
+        }else{
+            timer.put(request.getRoom(),request);
+
+        }
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
     }
@@ -153,6 +171,7 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
                 throw new RuntimeException(e);
             }
         }
+        responseObserver.onNext(Time.newBuilder().setTime(timeCount).setRoom(room).build());
         responseObserver.onCompleted();
     }
 

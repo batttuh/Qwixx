@@ -64,4 +64,5 @@ service QwixxService {
   rpc startGame(Room) returns (Empty){}
   rpc getStartedGame(Room) returns(stream Response){}
   rpc updateDice(User) returns(Empty){}
+  rpc removeRoom(Room) returns(Empty){}
 }

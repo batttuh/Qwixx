@@ -58,6 +58,10 @@ class QwixxServiceClient extends $grpc.Client {
       '/com.grpc.QwixxService/updateDice',
       ($0.User value) => value.writeToBuffer(),
       ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
+  static final _$removeRoom = $grpc.ClientMethod<$0.Room, $0.Empty>(
+      '/com.grpc.QwixxService/removeRoom',
+      ($0.Room value) => value.writeToBuffer(),
+      ($core.List<$core.int> value) => $0.Empty.fromBuffer(value));
 
   QwixxServiceClient($grpc.ClientChannel channel,
       {$grpc.CallOptions? options,
@@ -127,6 +131,11 @@ class QwixxServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.Empty> updateDice($0.User request,
       {$grpc.CallOptions? options}) {
     return $createUnaryCall(_$updateDice, request, options: options);
+  }
+
+  $grpc.ResponseFuture<$0.Empty> removeRoom($0.Room request,
+      {$grpc.CallOptions? options}) {
+    return $createUnaryCall(_$removeRoom, request, options: options);
   }
 }
 
@@ -211,6 +220,13 @@ abstract class QwixxServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.User.fromBuffer(value),
         ($0.Empty value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.Room, $0.Empty>(
+        'removeRoom',
+        removeRoom_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.Room.fromBuffer(value),
+        ($0.Empty value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.User> join_Pre(
@@ -268,6 +284,11 @@ abstract class QwixxServiceBase extends $grpc.Service {
     return updateDice(call, await request);
   }
 
+  $async.Future<$0.Empty> removeRoom_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.Room> request) async {
+    return removeRoom(call, await request);
+  }
+
   $async.Future<$0.User> join($grpc.ServiceCall call, $0.User request);
   $async.Future<$0.User> create($grpc.ServiceCall call, $0.User request);
   $async.Stream<$0.UserList> getAllUsers(
@@ -281,4 +302,5 @@ abstract class QwixxServiceBase extends $grpc.Service {
   $async.Stream<$0.Response> getStartedGame(
       $grpc.ServiceCall call, $0.Room request);
   $async.Future<$0.Empty> updateDice($grpc.ServiceCall call, $0.User request);
+  $async.Future<$0.Empty> removeRoom($grpc.ServiceCall call, $0.Room request);
 }

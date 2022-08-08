@@ -159,6 +159,18 @@ public final class QwixxServiceGrpc {
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
               com.grpc.Empty.getDefaultInstance()))
           .build();
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static final io.grpc.MethodDescriptor<com.grpc.Room,
+      com.grpc.Empty> METHOD_REMOVE_ROOM =
+      io.grpc.MethodDescriptor.<com.grpc.Room, com.grpc.Empty>newBuilder()
+          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+          .setFullMethodName(generateFullMethodName(
+              "com.grpc.QwixxService", "removeRoom"))
+          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              com.grpc.Room.getDefaultInstance()))
+          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+              com.grpc.Empty.getDefaultInstance()))
+          .build();
 
   /**
    * Creates a new async stub that supports all call types for the service
@@ -264,6 +276,13 @@ public final class QwixxServiceGrpc {
       asyncUnimplementedUnaryCall(METHOD_UPDATE_DICE, responseObserver);
     }
 
+    /**
+     */
+    public void removeRoom(com.grpc.Room request,
+        io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
+      asyncUnimplementedUnaryCall(METHOD_REMOVE_ROOM, responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -343,6 +362,13 @@ public final class QwixxServiceGrpc {
                 com.grpc.User,
                 com.grpc.Empty>(
                   this, METHODID_UPDATE_DICE)))
+          .addMethod(
+            METHOD_REMOVE_ROOM,
+            asyncUnaryCall(
+              new MethodHandlers<
+                com.grpc.Room,
+                com.grpc.Empty>(
+                  this, METHODID_REMOVE_ROOM)))
           .build();
     }
   }
@@ -452,6 +478,14 @@ public final class QwixxServiceGrpc {
       asyncUnaryCall(
           getChannel().newCall(METHOD_UPDATE_DICE, getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void removeRoom(com.grpc.Room request,
+        io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(METHOD_REMOVE_ROOM, getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -553,6 +587,13 @@ public final class QwixxServiceGrpc {
       return blockingUnaryCall(
           getChannel(), METHOD_UPDATE_DICE, getCallOptions(), request);
     }
+
+    /**
+     */
+    public com.grpc.Empty removeRoom(com.grpc.Room request) {
+      return blockingUnaryCall(
+          getChannel(), METHOD_REMOVE_ROOM, getCallOptions(), request);
+    }
   }
 
   /**
@@ -620,6 +661,14 @@ public final class QwixxServiceGrpc {
       return futureUnaryCall(
           getChannel().newCall(METHOD_UPDATE_DICE, getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<com.grpc.Empty> removeRoom(
+        com.grpc.Room request) {
+      return futureUnaryCall(
+          getChannel().newCall(METHOD_REMOVE_ROOM, getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_JOIN = 0;
@@ -633,6 +682,7 @@ public final class QwixxServiceGrpc {
   private static final int METHODID_START_GAME = 8;
   private static final int METHODID_GET_STARTED_GAME = 9;
   private static final int METHODID_UPDATE_DICE = 10;
+  private static final int METHODID_REMOVE_ROOM = 11;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -695,6 +745,10 @@ public final class QwixxServiceGrpc {
           serviceImpl.updateDice((com.grpc.User) request,
               (io.grpc.stub.StreamObserver<com.grpc.Empty>) responseObserver);
           break;
+        case METHODID_REMOVE_ROOM:
+          serviceImpl.removeRoom((com.grpc.Room) request,
+              (io.grpc.stub.StreamObserver<com.grpc.Empty>) responseObserver);
+          break;
         default:
           throw new AssertionError();
       }
@@ -739,6 +793,7 @@ public final class QwixxServiceGrpc {
               .addMethod(METHOD_START_GAME)
               .addMethod(METHOD_GET_STARTED_GAME)
               .addMethod(METHOD_UPDATE_DICE)
+              .addMethod(METHOD_REMOVE_ROOM)
               .build();
         }
       }

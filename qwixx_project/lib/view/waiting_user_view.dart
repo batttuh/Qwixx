@@ -25,6 +25,7 @@ class _WaitingUserState extends State<WaitingUser> {
     super.initState();
         connectClient();
         storeUserId();
+      
  
   }
   
@@ -43,15 +44,19 @@ class _WaitingUserState extends State<WaitingUser> {
           yield msg;
     }
   }
-
-
-@override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    clientController.shutDownChannel();
-    print("shutit");
+  Stream<Response> startGameListen()async*{
+  
+    var response = clientController.getStartedGame(Room(roomId: widget.user.room.roomId,sixSide: widget.side));
+    await for (var msg in response) {
+      if(msg.msg=="started"){
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>OnlineGameView(side: widget.side,user: widget.user)));
+      }
+      
+    }
   }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,15 +100,21 @@ class _WaitingUserState extends State<WaitingUser> {
             
             Padding(
               padding:const EdgeInsets.only(top: 50),
-              child: ElevatedButton(onPressed: () async {
-              await clientController.startGame(widget.user.room).then((value) => 
-                 Navigator.of(context).push(MaterialPageRoute(builder: (context)=>OnlineGameView(
-                  side: widget.side,user: widget.user
-                  )))
-              );
-            
-             
-              }, child: const Text("Start the game")),
+              child: StreamBuilder<Response>(builder: (context, snapshot) {
+
+                return ElevatedButton(onPressed: () async {
+           
+                
+                  await clientController.startGame(widget.user.room).then((value) {
+                    setState(() {
+                      
+                    });
+                  
+                  });  
+                       
+                           
+                }, child: const Text("Start the game"));
+              },stream: startGameListen()),
             )
               
               ],
