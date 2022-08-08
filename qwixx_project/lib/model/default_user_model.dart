@@ -6,8 +6,6 @@ class DefaultUserModel {
     return User(
             room: Room(roomId:id,sixSide: sixSide),
             dices: OnlineGameController().getAllDice());
-
-
   }
 
 

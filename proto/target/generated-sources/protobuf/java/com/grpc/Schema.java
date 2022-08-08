@@ -76,7 +76,7 @@ public final class Schema {
       "Empty\")\n\010UserList\022\035\n\005users\030\001 \003(\0132\016.com.g" +
       "rpc.User\"&\n\010Response\022\r\n\005error\030\001 \001(\005\022\013\n\003m" +
       "sg\030\002 \001(\t\"2\n\004Time\022\014\n\004Time\030\001 \001(\005\022\034\n\004room\030\002" +
-      " \001(\0132\016.com.grpc.Room2\252\004\n\014QwixxService\022(\n" +
+      " \001(\0132\016.com.grpc.Room2\333\004\n\014QwixxService\022(\n" +
       "\004join\022\016.com.grpc.User\032\016.com.grpc.User\"\000\022" +
       "*\n\006create\022\016.com.grpc.User\032\016.com.grpc.Use" +
       "r\"\000\0225\n\013getAllUsers\022\016.com.grpc.Room\032\022.com" +
@@ -90,7 +90,8 @@ public final class Schema {
       "m.grpc.Room\032\017.com.grpc.Empty\"\000\0228\n\016getSta" +
       "rtedGame\022\016.com.grpc.Room\032\022.com.grpc.Resp" +
       "onse\"\0000\001\022/\n\nupdateDice\022\016.com.grpc.User\032\017" +
-      ".com.grpc.Empty\"\000B\002P\001b\006proto3"
+      ".com.grpc.Empty\"\000\022/\n\nremoveRoom\022\016.com.gr" +
+      "pc.Room\032\017.com.grpc.Empty\"\000B\002P\001b\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {

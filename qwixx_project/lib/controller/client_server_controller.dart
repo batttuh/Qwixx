@@ -79,4 +79,7 @@ late final QwixxServiceClient stub;
       }
     }
   }
+  Future<void> removeRoom(Room room) async {
+   await stub.removeRoom(room);
+  }
 }

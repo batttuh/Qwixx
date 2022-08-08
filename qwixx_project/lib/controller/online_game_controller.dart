@@ -45,12 +45,12 @@ class OnlineGameController extends ClientController {
     user.dices.addAll(dices);
     updateDices(user);
   }
-  void rollDice(
+  Future<void> rollDice(
     //bool isTimeFinished,
     //isRolled,timeSetted,
     //AnimationController animationController,
     bool sixSide,
-    User user) {
+    User user) async {
 
     //   isRolled=true;
     //   if (isRolled&&timeSetted) {
