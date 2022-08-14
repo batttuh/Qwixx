@@ -76,10 +76,7 @@ class _OnlineGameViewState extends State<OnlineGameView> {
   void dispose() {
     detector.stopListening();
     super.dispose();
-    if(currentUser.queue==0){
-      onlineGameController.removeRoom(currentUser.room);
-      controller.shutDownChannel();
-    }
+     
 
   }
   void refreshPage(){
@@ -114,7 +111,10 @@ class _OnlineGameViewState extends State<OnlineGameView> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            
+            if(currentUser.queue==0){
+              onlineGameController.removeRoom(currentUser.room);
+              controller.shutDownChannel();
+            }
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const HomeView()));
           },
