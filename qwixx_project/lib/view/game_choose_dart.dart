@@ -39,7 +39,7 @@ class _GameChooseState extends State<GameChoose> {
                  User user=await controller.create(
                       DefaultUserModel().userModel(newUUID,true)
                   );
-                  Navigator.push(
+                   Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) =>  WaitingUser(side: true,user: user)),
                   );

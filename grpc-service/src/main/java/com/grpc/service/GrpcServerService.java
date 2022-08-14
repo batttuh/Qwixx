@@ -1,9 +1,7 @@
 package com.grpc.service;
 
 
-import com.google.protobuf.Descriptors;
-import com.grpc.*;
-import com.grpc.Dice;
+
 import com.grpc.Empty;
 import com.grpc.QwixxServiceGrpc;
 import com.grpc.Response;
@@ -11,15 +9,13 @@ import com.grpc.Room;
 import com.grpc.Time;
 import com.grpc.User;
 import com.grpc.UserList;
-import io.grpc.Context;
+
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 
-import java.io.OutputStream;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @GrpcService
 public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
@@ -35,7 +31,6 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     @Override
     public void updateDice(User request, StreamObserver<Empty> responseObserver) {
         user.get(request.getRoom()).set(queue.get(request.getRoom()), request);
-        System.out.println(user);
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
     }
@@ -46,7 +41,6 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
 
         for(StreamObserver<Response> observer:startGameObserver){
             if(games.get(request)){
-                System.out.println("Here");
                 observer.onNext(Response.newBuilder().setMsg("started").setError(0).build());
             }else{
                 observer.onNext(Response.newBuilder().setMsg("not Started").setError(1).build());
@@ -71,7 +65,6 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     public void getAllUsers(Room request, StreamObserver<UserList> responseObserver) {
 
         observers.add(responseObserver);
-        System.out.println(request);
         UserList list=UserList.newBuilder().addAllUsers(user.get(request)).build();
 
         for(StreamObserver<UserList> observer:observers){
@@ -98,6 +91,7 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
             for(StreamObserver<User> observer:currentUserObserver){
                 int userQueue=queue.get(request);
                 observer.onNext(user.get(request).get(userQueue));
+
             }
             try {
                 Thread.sleep(100000);
