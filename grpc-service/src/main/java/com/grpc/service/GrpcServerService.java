@@ -28,15 +28,15 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
     static List<StreamObserver<Response>> startGameObserver=new ArrayList<>();
 
 
-    @Override
-    public void updateDice(User request, StreamObserver<Empty> responseObserver) {
+    public void updateDice(com.grpc.User request,
+                           io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
         user.get(request.getRoom()).set(queue.get(request.getRoom()), request);
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
     }
 
-    @Override
-    public void getStartedGame(Room request, StreamObserver<Response> responseObserver) {
+    public void getStartedGame(com.grpc.Room request,
+                               io.grpc.stub.StreamObserver<com.grpc.Response> responseObserver) {
         startGameObserver.add(responseObserver);
 
         for(StreamObserver<Response> observer:startGameObserver){
@@ -61,7 +61,6 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
 
     }
 
-    @Override
     public void getAllUsers(Room request, StreamObserver<UserList> responseObserver) {
 
         observers.add(responseObserver);
@@ -75,15 +74,14 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
    //   observers.remove(responseObserver);
     }
 
-    @Override
-    public void startGame(Room request, StreamObserver<Empty> responseObserver) {
+    public void startGame(com.grpc.Room request,
+                          io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
         games.replace(request,true);
         responseObserver.onNext(Empty.newBuilder().build());
         responseObserver.onCompleted();
 
     }
 
-    @Override
     public void currentUser(Room request, StreamObserver<User> responseObserver) {
 
         currentUserObserver.add(responseObserver);
@@ -101,18 +99,17 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
             responseObserver.onCompleted();
             currentUserObserver.remove(responseObserver);
 
-
-
     }
 
-    @Override
-    public void removeRoom(Room request, StreamObserver<Empty> responseObserver) {
+
+    public void removeRoom(com.grpc.Room request,
+                           io.grpc.stub.StreamObserver<com.grpc.Empty> responseObserver) {
         user.remove(request);
         responseObserver.onCompleted();
     }
 
-    @Override
-    public void nextUser(Room request, StreamObserver<User> responseObserver) {
+    public void nextUser(com.grpc.Room request,
+                         io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
         int list=(queue.get(request)+1)%user.get(request).size();
         queue.replace(request,list);
         int userQueue=queue.get(request);
@@ -120,7 +117,6 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
         responseObserver.onCompleted();
     }
 
-    @Override
     public void join(User request, StreamObserver<User> responseObserver) {
         Room room=Room.newBuilder().setRoomId(request.getRoom().getRoomId()).build();
         List<Room> findRoom=user.keySet().stream().filter(room1 -> room1.getRoomId().equals(room.getRoomId())).collect(Collectors.toList());
@@ -138,7 +134,6 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
         responseObserver.onCompleted();
     }
 
-    @Override
     public void setTime(Time request, StreamObserver<Empty> responseObserver) {
         if(timer.containsKey(request.getRoom())){
             timer.replace(request.getRoom(),request);
@@ -150,7 +145,6 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
         responseObserver.onCompleted();
     }
 
-    @Override
     public void startTimer(Room request, StreamObserver<Time> responseObserver) {
         LocalDateTime deadline= LocalDateTime.now().plusSeconds(timer.get(request).getTime());
         int timeCount=timer.get(request).getTime();
@@ -169,7 +163,6 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
         responseObserver.onCompleted();
     }
 
-    @Override
     public void create(User request, StreamObserver<User> responseObserver) {
         Room room=Room.newBuilder().setRoomId(request.getRoom().getRoomId()).setSixSide(request.getRoom().getSixSide()).build();
         if(user.containsKey(room)){
@@ -178,7 +171,11 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
         }else{
             games.put(room,false);
             user.put(room,new ArrayList<>());
-            user.get(room).add(request.toBuilder().setQueue(user.get(room).size()).setId(UUID.randomUUID().toString()).build());
+            String uuid=UUID.randomUUID().toString();
+            while(user.containsKey(uuid)){
+                uuid=UUID.randomUUID().toString();
+            }
+            user.get(room).add(request.toBuilder().setQueue(user.get(room).size()).setId(uuid).build());
             responseObserver.onNext(user.get(request.getRoom()).get(user.get(room).size()-1));
             queue.put(request.getRoom(),0);
         }
@@ -187,8 +184,8 @@ public class GrpcServerService extends QwixxServiceGrpc.QwixxServiceImplBase {
 
 
 
-    @Override
-    public void receiveDice(Room request, StreamObserver<User> responseObserver) {
+    public void receiveDice(com.grpc.Room request,
+                            io.grpc.stub.StreamObserver<com.grpc.User> responseObserver) {
         user.get(request).forEach(responseObserver::onNext);
         responseObserver.onCompleted();
     }

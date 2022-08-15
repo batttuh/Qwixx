@@ -1,1 +1,2 @@
 com\grpc\Application.class
+com\grpc\service\GrpcServerService.class
