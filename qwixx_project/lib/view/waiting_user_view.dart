@@ -4,10 +4,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qwixx_project/controller/client_server_controller.dart';
-import 'package:qwixx_project/view/online_game_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../src/generated/proto/src/main/proto/schema.pbgrpc.dart';
+import 'online_game_view.dart';
 
 class WaitingUser extends StatefulWidget {
   final bool side;
@@ -46,13 +46,15 @@ class _WaitingUserState extends State<WaitingUser> {
   }
   Stream<Response> startGameListen()async*{
   
-    var response = clientController.getStartedGame(Room(roomId: widget.user.room.roomId,sixSide: widget.side));
-    await for (var msg in response) {
-      if(msg.msg=="started"){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>OnlineGameView(side: widget.side,user: widget.user)));
-      }
+    // var response = clientController.getStartedGame(Room(roomId: widget.user.room.roomId,sixSide: widget.side));
+    // await for (var msg in response) {
+    //   if(msg.msg=="started"){
+    //     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>OnlineGameView(side: widget.side,user: widget.user)));
+    //   }
       
-    }
+    // }
+    yield Response(msg: "started");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>OnlineGameView(side: widget.side,user: widget.user)));
   }
 
 
