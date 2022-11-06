@@ -61,6 +61,12 @@ dev_dependencies:
   protobuf: ^2.1.0
   #uuid
   uuid: ^3.0.6
+  #localizator
+  get_it: ^7.2.0
+  #localization
+  easy_localization: ^3.0.1
+  #phoenix
+  flutter_phoenix: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -83,6 +89,7 @@ flutter:
     - assets/image/greenDice/
     - assets/image/redDice/
     - assets/sounds/dice-effect.mp3
+    - assets/translations/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import "package:lottie/lottie.dart";
 import 'package:provider/provider.dart';
+import 'package:qwixx_project/core/localization/locale_keys.dart';
 import 'package:qwixx_project/view/create_game_view.dart';
 import 'package:qwixx_project/view/rules_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../controller/setLoacation.dart';
 import '../controller/theme_controller.dart';
+import '../core/utils/global.dart';
 import 'game_choose_dart.dart';
 
 class HomeView extends StatefulWidget {
@@ -25,7 +27,6 @@ class _HomeViewState extends State<HomeView> {
     Location.location("HomeScreen");
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +35,11 @@ class _HomeViewState extends State<HomeView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,
-        children:   const [
+        children: const [
           TopWidget(),
           ButtonsRowWidget(),
           PlayFriendsWidget(),
-           ThemeChangeWidget(),
-
+          ThemeChangeWidget(),
         ],
       ),
     ));
@@ -55,14 +55,16 @@ class PlayFriendsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
-      child: ElevatedButton(onPressed: (){
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CreateGameView(),
-            ),
-          );
-      }, child: const Text("Play with Friends")),
+      child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CreateGameView(),
+              ),
+            );
+          },
+          child: Text(localizor.tr(LocaleKeys.withFriends))),
     );
   }
 }
@@ -78,12 +80,11 @@ class ThemeChangeWidget extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20),
       child: ElevatedButton(
         style: Theme.of(context).elevatedButtonTheme.style,
-        child: const Text("Theme Change"),
+        child: Text(localizor.tr(LocaleKeys.themeChange)),
         onPressed: () async {
           context.read<ChangeTheme>().changeTheme();
           final prefs = await SharedPreferences.getInstance();
-          await prefs.setBool(
-              'darkMode', context.read<ChangeTheme>().isLight);
+          await prefs.setBool('darkMode', context.read<ChangeTheme>().isLight);
         },
       ),
     );
@@ -98,9 +99,11 @@ class TopWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      SizedBox(height:MediaQuery.of(context).size.height*0.4,child: Lottie.asset("assets/animation/homeAnimation.json")),
+      SizedBox(
+          height: MediaQuery.of(context).size.height * 0.4,
+          child: Lottie.asset("assets/animation/homeAnimation.json")),
       Text(
-        "Qwixx",
+        localizor.tr(LocaleKeys.appTitle),
         style: Theme.of(context).textTheme.headline3,
       )
     ]);
@@ -138,7 +141,7 @@ class RulesButtonWidget extends StatelessWidget {
     return Expanded(
       child: ElevatedButton(
         style: Theme.of(context).elevatedButtonTheme.style,
-        child: const Text("Rules"),
+        child: Text(localizor.tr(LocaleKeys.rules)),
         onPressed: () {
           Navigator.push(
             context,
@@ -162,12 +165,12 @@ class StartGameButtonWidget extends StatelessWidget {
     return Expanded(
       child: ElevatedButton(
         style: Theme.of(context).elevatedButtonTheme.style,
-        child: const Text("Start Game"),
+        child: Text(localizor.tr(LocaleKeys.start)),
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => GameChoose(online:false),
+              builder: (context) => const GameChoose(online: false),
             ),
           );
         },

@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_view.dart';
-import 'onboarding_view.dart';
+import 'language_choose.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -29,25 +29,23 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var locations = preferences.getString('locations');
     if (locations == "HomeScreen") {
-
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomeView()));
-    } 
-     if (locations == "onBoarding" ) {
-
-      Navigator.pushReplacement (
-          context, MaterialPageRoute(builder: (context) => const FirstOnboardingScreen()));
+    }
+    if (locations == "onBoarding") {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const LanguageChoose()));
     }
     if (locations != "onBoarding" && locations == null) {
-      Navigator.pushReplacement (
-          context, MaterialPageRoute(builder: (context) => const FirstOnboardingScreen()));
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (context) => const LanguageChoose()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(child: Lottie.asset('assets/animation/splashAnimation.json'))
-        );
+        body: Center(
+            child: Lottie.asset('assets/animation/splashAnimation.json')));
   }
 }

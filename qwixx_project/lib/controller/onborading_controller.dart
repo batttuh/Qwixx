@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:qwixx_project/core/utils/global.dart';
 import 'package:qwixx_project/model/onboarding_model.dart';
 import 'package:shake/shake.dart';
 
+import '../core/localization/locale_keys.dart';
 
 class OnboardingController extends ChangeNotifier {
   int currentPage = 0;
   OnboardingController();
   PageController pageController = PageController(initialPage: 0);
-  void forward( ) {
-    
+  void forward() {
     if (currentPage < onboardingPages.length - 1) {
-      
-            currentPage++;
+      currentPage++;
 
       pageController.nextPage(
-          duration: const Duration(milliseconds: 600), curve: Curves.easeIn
-      );
-      
+          duration: const Duration(milliseconds: 600), curve: Curves.easeIn);
+
       notifyListeners();
     }
   }
-  void listenShake(ShakeDetector shakeDetector){
+
+  void listenShake(ShakeDetector shakeDetector) {
     shakeDetector.startListening();
   }
+
   void updatePage(int index) {
     currentPage = index;
     notifyListeners();
@@ -31,21 +32,18 @@ class OnboardingController extends ChangeNotifier {
   List<OnboardingModel> onboardingPages = [
     OnboardingModel(
       animationAsset: "assets/animation/dice.json",
-      title: 'Welcome to Qwixx',
-      description:
-          'In a game played with Qwixx dice, 6 or 8 dice are thrown for this game and the game is played according to the values of the dice thrown.',
+      title: localizor.tr(LocaleKeys.title1OnBoard),
+      description: localizor.tr(LocaleKeys.description1),
     ),
     OnboardingModel(
       animationAsset: "assets/animation/bulb.json",
-      title: 'Also, you can change the theme of the game',
-      description: 'Just click the bulb',
+      title: localizor.tr(LocaleKeys.title2OnBoard),
+      description: localizor.tr(LocaleKeys.description2),
     ),
     OnboardingModel(
       animationAsset: "assets/animation/shakePhone.json",
-      title: 'Shake the phone for starting the game',
-      description: 'Or pressed the button',
+      title: localizor.tr(LocaleKeys.title3OnBoard),
+      description: localizor.tr(LocaleKeys.description3),
     ),
   ];
-  
 }
-
